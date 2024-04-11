@@ -10,4 +10,4 @@ Find the extensive list of provided patterns [here](./patterns).
 
 __My Favourite: Diagonal Bits Pattern__
 
-<img scr="./patterns/diagonal_bits_pattern/preview.png" alt="diagonal bits pattern" width="500" />
+<img src="./patterns/diagonal_bits_pattern/preview.png" alt="diagonal bits pattern" width="500" />
