@@ -6,8 +6,10 @@ This is an automatically daily runnable script that paints a pattern of choice f
 
 ### Provided Patterns
 
+Patterns are images that has to be 7 pixels in height, but there are no limits on width since they'll be repeated anyways.
+
 Find the extensive list of provided patterns [here](./patterns).
 
-__My Favourite: Diagonal Bits Pattern__
-
+I'll leave you with my personal favourite though: Diagonal Bits Pattern
 <img src="./patterns/diagonal_bits_pattern/preview.png" alt="diagonal bits pattern" width="500" />
+<embed type="text/html" src="./patterns/diagonal_bits_pattern/preview.html" width="500" />
