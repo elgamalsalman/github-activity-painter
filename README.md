@@ -4,6 +4,12 @@
 
 This is an automatically daily runnable script that paints a pattern of choice from a png image onto your github activity bar! 
 
+### Instructions
+
+```
+pip install python-dotenv
+```
+
 ### Provided Patterns
 
 Patterns are images that has to be 7 pixels in height, but there are no limits on width since they'll be repeated anyways.
