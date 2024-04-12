@@ -13,5 +13,3 @@ Find the extensive list of provided patterns [here](./patterns).
 I'll leave you with my personal favourite though: Diagonal Bits Pattern
 
 <img src="./patterns/diagonal_bits_pattern/preview.png" alt="diagonal bits pattern" width="500" />
-
-<embed type="text/html" src="./patterns/diagonal_bits_pattern/preview.html" height="200" width="500" />
