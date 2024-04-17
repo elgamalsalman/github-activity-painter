@@ -7,7 +7,7 @@ This is an automatically daily runnable script that paints a pattern of choice f
 ### Instructions
 
 ```
-pip install python-dotenv
+pip install numpy python-dotenv
 ```
 
 ### Provided Patterns
@@ -18,4 +18,4 @@ Find the extensive list of provided patterns [here](./patterns).
 
 I'll leave you with my personal favourite though: Diagonal Bits Pattern
 
-<img src="./patterns/diagonal_bits/preview.png" alt="diagonal bits pattern" width="500" />
+<img src="./patterns/diagonal_bits/pattern.png" alt="diagonal bits pattern" width="500" />

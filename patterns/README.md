@@ -14,5 +14,5 @@ And then for each pattern you will find a separate director with
 
 |             Pattern              |                                      Preview                                      | Period |
 | :------------------------------: | :-------------------------------------------------------------------------------: | :----: |
-| [Diagonal Bits](./diagonal_bits) | <img src="./diagonal_bits/preview.png" alt="diagonal bits pattern" width="500" /> |   37   |
-| [Bamboo](./bamboo)               | <img src="./bamboo/preview.png" alt="bamboo pattern" width="500" />               |   12   |
+| [Diagonal Bits](./diagonal_bits) | <img src="./diagonal_bits/pattern.png" alt="diagonal bits pattern" width="500" /> |   37   |
+| [Bamboo](./bamboo)               | <img src="./bamboo/pattern.png" alt="bamboo pattern" width="500" />               |   12   |
