@@ -7,7 +7,7 @@ This is an automatically daily runnable script that paints a pattern of choice f
 ### Instructions
 
 ```
-pip install numpy python-dotenv
+pip install numpy python-dotenv Pillow
 ```
 
 ### Provided Patterns
