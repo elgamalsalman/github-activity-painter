@@ -50,10 +50,21 @@ In order to add your own patterns just add a new folder to the [patterns](./patt
 
 Patterns are images that has to be 7 pixels in height, but there are no limits on width since they'll be repeated anyways.
 
-Find the extensive list of provided patterns [here](./patterns).
+Find the extensive list of provided patterns in the [patterns directory](./patterns).
 
-I'll leave you with my personal favourite though: Diagonal Bits Pattern
+#### Description
 
-<p align="center">
-	<img src="./patterns/diagonal_bits/preview.png" alt="diagonal bits pattern" width="400" />
-</p>
+In the [patterns directory](./patterns) you can find for each pattern a separate director with:
+- A `preview.png` file with a scaled up coloured preview of the  pattern
+- A `pattern.xcf` file with the original pattern gimp file
+- A `pattern.png` file with the original pattern
+- The period, the width of the repeating unit of the pattern, of each pattern is provided in the table below
+
+#### List of Patterns!
+
+My personal favourite: Diagonal Bits Pattern
+
+|             Pattern              |                                      Preview                                      | Period |
+| :------------------------------: | :-------------------------------------------------------------------------------: | :----: |
+| [Diagonal Bits](./diagonal_bits) | <img src="./diagonal_bits/preview.png" alt="diagonal bits pattern" width="400" /> |   37   |
+| [Bamboo](./bamboo)               | <img src="./bamboo/preview.png" alt="bamboo pattern" width="500" />               |   12   |
