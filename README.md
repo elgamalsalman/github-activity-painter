@@ -66,5 +66,5 @@ My personal favourite: Diagonal Bits Pattern
 
 |             Pattern              |                                      Preview                                      | Period |
 | :------------------------------: | :-------------------------------------------------------------------------------: | :----: |
-| [Diagonal Bits](./patterns/diagonal_bits) | <img src="./patterns/diagonal_bits/preview.png" alt="diagonal bits pattern" width="400" /> |   37   |
-| [Bamboo](./patterns/bamboo)               | <img src="./patterns/bamboo/preview.png" alt="bamboo pattern" width="500" />               |   12   |
+| [Diagonal Bits](./patterns/diagonal_bits) | <img src="./patterns/diagonal_bits/preview.png" alt="diagonal bits pattern" height="50" /> |   37   |
+| [Bamboo](./patterns/bamboo)               | <img src="./patterns/bamboo/preview.png" alt="bamboo pattern" height="50" />               |   12   |
