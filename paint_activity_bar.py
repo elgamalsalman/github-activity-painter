@@ -14,13 +14,17 @@ from PIL import Image
 # ----- globals -----
 
 # debug
-debug = True
+debug = False
 
 # parameters
 load_dotenv()
 dummy_repo_path = os.path.expanduser(os.getenv("dummy_repo_path"))
-start_date = os.getenv("start_date")
-reference_date = os.getenv("reference_date")
+start_date_str = os.getenv("start_date")
+start_date = None
+end_date_str = os.getenv("end_date")
+end_date = None
+reference_date_str = os.getenv("reference_date")
+reference_date = None
 min_commit_count = int(os.getenv("min_commit_count"))
 max_commit_count = int(os.getenv("max_commit_count"))
 patterns_folder_path = os.path.expanduser(os.getenv("patterns_folder_path"))
@@ -44,13 +48,14 @@ pattern_pixel_count = 0
 # ----- classes -----
 
 class Timeline_entry:
-    def __init__(self, date, commit_percentage, commit_count):
+    def __init__(self, date, commit_percentage, commit_count, target_commit_count):
         if type(date) == str:
             date = datetime_string_to_object(date)
         self.date = date
         self.commit_percentage = commit_percentage
-        self.target_commit_count = get_target_commit_count_from_percentage(self.commit_percentage)
         self.commit_count = commit_count
+        self.target_commit_count = target_commit_count
+        # self.target_commit_count = get_target_commit_count_from_percentage(self.commit_percentage)
 
     def __str__(self):
         date_string = datetime_object_to_string(self.date)
@@ -76,10 +81,12 @@ def datetime_object_to_string(dt_object):
 def run_bash(commands):
     result = subprocess.run(commands, shell=True, capture_output=True, text=True)
     output = result.stdout
+    error = result.stderr
     if (debug):
         print(commands)
         print(output)
-    return output
+        print(error)
+    return output, error
 
 def pull_dummy_repo():
     commands = \
@@ -87,7 +94,8 @@ def pull_dummy_repo():
         cd {dummy_repo_path}
         git pull
     """
-    run_bash(commands)
+    output, error = run_bash(commands)
+    return ('fatal' not in error.strip())
 
 def push_dummy_repo(date = None, commit_message = "auto"):
     date_param = ""
@@ -100,7 +108,8 @@ def push_dummy_repo(date = None, commit_message = "auto"):
         git commit -am \"{commit_message}\" {date_param}
         git push
     """
-    run_bash(commands)
+    output, error = run_bash(commands)
+    return ('fatal' not in error.strip())
 
 def copy_file_to(src, trg):
     assert(os.path.exists(src))
@@ -188,7 +197,7 @@ def get_commit_percentage_color(percent):
     return rgb_to_hex(color)
 
 def get_target_commit_percentage_at(current_date):
-    days_delta = (current_date - datetime_string_to_object(reference_date)).days
+    days_delta = (current_date - reference_date).days
     assert(days_delta >= 0 and "Date can not be before reference!")
     pixel_index = days_delta % pattern_pixel_count
     pixel_percentage = get_pattern_pixel_percentage(pixel_index)
@@ -210,8 +219,8 @@ def parse_timeline_entry(line):
     target_commit_count = int(match.group(4))
 
     # create and return the timeline entry object
-    timeline_entry = Timeline_entry(date, commit_percentage, commit_count)
-    assert(target_commit_count == timeline_entry.target_commit_count)
+    timeline_entry = Timeline_entry(date, commit_percentage, commit_count, target_commit_count)
+    assert(commit_count <= timeline_entry.target_commit_count and "Faulty dummy readme, too many commits in one of the days, please recreate the dummy repo!")
     return timeline_entry
 
 def next_day(dt):
@@ -223,21 +232,28 @@ def today():
     return current_date
 
 def mend_next_commit_gap(timeline_entries):
-    current_date = datetime_string_to_object(start_date)
+    current_date = start_date
     entry_index = 0
     while entry_index < len(timeline_entries):
         timeline_entry = timeline_entries[entry_index]
         if current_date < timeline_entry.date:
             target_commit_percentage = get_target_commit_percentage_at(current_date)
-            new_entry = Timeline_entry(current_date, target_commit_percentage, 1)
+            target_commit_count = get_target_commit_count_from_percentage(target_commit_percentage)
+            new_entry = Timeline_entry(current_date, target_commit_percentage, 1, target_commit_count)
             timeline_entries.insert(entry_index, new_entry)
             return False, current_date, timeline_entries
         elif current_date == timeline_entry.date:
-            if timeline_entry.commit_count < timeline_entry.target_commit_count:
+            # check new tragets
+            target_commit_percentage = get_target_commit_percentage_at(current_date)
+            target_commit_count = get_target_commit_count_from_percentage(target_commit_percentage)
+            assert(timeline_entry.commit_count <= target_commit_count and "Too many commits already done in one of the days, please recreate the dummy repo!")
+
+            if timeline_entry.commit_count < target_commit_count:
                 modified_entry = Timeline_entry(
                         current_date,
-                        timeline_entry.commit_percentage,
+                        target_commit_percentage,
                         timeline_entry.commit_count + 1,
+                        target_commit_count
                 )
                 timeline_entries[entry_index] = modified_entry
                 return False, current_date, timeline_entries
@@ -248,28 +264,34 @@ def mend_next_commit_gap(timeline_entries):
         current_date = next_day(current_date)
         entry_index += 1
     
-    # if next entry is not beyond today
-    if current_date <= today():
+    # if next entry is not beyond end date
+    if current_date <= end_date:
         target_commit_percentage = get_target_commit_percentage_at(current_date)
-        timeline_entries.append(Timeline_entry(current_date, target_commit_percentage, 1))
+        target_commit_count = get_target_commit_count_from_percentage(target_commit_percentage)
+        timeline_entries.append(Timeline_entry(current_date, target_commit_percentage, 1, target_commit_count))
         return False, current_date, timeline_entries
-    # if all commits done including today's
+    # if all commits done including one at end date
     else:
         return True, None, timeline_entries
 
 # ----- main -----
 
 def setup():
+    global start_date
+    global end_date
     global reference_date
     global pattern
     global pattern_pixel_count
 
+    # turn date strings to dates
+    start_date = datetime_string_to_object(start_date_str)
+    end_date = datetime_string_to_object(end_date_str)
+    reference_date = datetime_string_to_object(reference_date_str)
+
     # adjust reference date to be a sunday
-    reference_datetime_object = datetime_string_to_object(reference_date)
-    reference_weekday = reference_datetime_object.weekday()
+    reference_weekday = reference_date.weekday()
     days_delta = (reference_weekday + 1) % 7
-    reference_datetime_object = reference_datetime_object - timedelta(days=days_delta)
-    reference_date = datetime_object_to_string(reference_datetime_object)
+    reference_date = reference_date - timedelta(days=days_delta)
 
     # load pattern
     pattern_image_path = os.path.join(patterns_folder_path, pattern_name, pattern_file_name)
@@ -288,7 +310,9 @@ def setup():
     #     print('')
 
 def main():
-    pull_dummy_repo()
+    pulled = False
+    while not pulled:
+        pulled = pull_dummy_repo()
     readme_path = dummy_repo_path + '/README.md'
     if not os.path.exists(readme_path):
         print(f"Creating new dummy repo README.md at {readme_path}")
@@ -304,9 +328,12 @@ def main():
             break
 
         # do the commit
+        print(f"[*] New commit at {datetime_object_to_string(commit_date)}")
         timeline_entries = new_timeline_entries
         write_dummy_readme(readme_path, starting_lines, timeline_entries, ending_lines)
-        push_dummy_repo(commit_date)
+        pushed = False
+        while not pushed:
+            pushed = push_dummy_repo(commit_date)
 
 if __name__ == '__main__':
     setup()

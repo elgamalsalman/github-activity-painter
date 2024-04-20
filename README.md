@@ -2,13 +2,49 @@
 
 ### Description
 
-This is an automatically daily runnable script that paints a pattern of choice from a png image onto your github activity bar! 
+This is a script that paints a pattern of choice from a png image onto your github activity bar! 
+
+> [!WARNING]
+> DISCLAIMER: This project is not intended to be used as a method of decieving viewers of github profiles into thinking
+> that the user is active on github, but instead is meant as an education and experimental tool. We highly recommend drawing
+> with this tool only patterns that are easily recognized in order to indicate to the viewer that it is automatic and not
+> from human-made commits. We encourage transparency and not deception, use at your own accountability.
 
 ### Instructions
+
+> [!IMPORTANT]
+> Please make sure you first make a **dummy repository** to do the commits in, this can be private or public, if private
+> though you have to turn on the visibility of private commits on the github activity bar. We also encourage users to make
+> their dummy repositories public out of honesty and transparency.
+
+Make sure dependencies are installed
 
 ```
 pip install numpy python-dotenv Pillow
 ```
+
+Then clone the repo
+
+```
+git clone https://github.com/elgamalsalman/github-activity-painter
+cd github-activity-painter
+```
+
+Then inside of your cloned repo make your `.env` by copying `template.env`
+```bash
+cp template.env .env
+```
+
+Now edit the `.env` to your desire, from your `.env` you must:
+- Edit `dummy_repo_path` variable to reflect the location of the dummy repo
+
+and from the `.env` you also can but not necessarily have to:
+- Edit the pattern to be used
+- Edit the start and end dates of the pattern
+- Edit the reference date (to shift the pattern)
+- Edit the range of commits per day (min and max)
+
+In order to add your own patterns just add a new folder to the [patterns](./patterns) directory with the name of the pattern and holding the `pattern.png` image of the pattern, and change the `pattern_name` variable in `.env` to reflect the name of the newly added pattern.
 
 ### Provided Patterns
 
@@ -18,4 +54,6 @@ Find the extensive list of provided patterns [here](./patterns).
 
 I'll leave you with my personal favourite though: Diagonal Bits Pattern
 
-<img src="./patterns/diagonal_bits/pattern.png" alt="diagonal bits pattern" width="500" />
+<p align="center">
+	<img src="./patterns/diagonal_bits/preview.png" alt="diagonal bits pattern" width="400" />
+</p>
