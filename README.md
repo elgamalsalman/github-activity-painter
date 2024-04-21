@@ -1,5 +1,9 @@
 # Github Activity Painter! &nbsp; ![Image of Version](https://img.shields.io/badge/version-v1.0-green) ![Image of Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen)
 
+<p align="center">
+	<img src="./patterns/diagonal_bits/github_activity_bar.png" alt="activity bar example" />
+</p>
+
 ### Description
 
 This is a script that paints a pattern of choice from a png image onto your github activity bar! 
