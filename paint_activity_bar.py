@@ -338,3 +338,4 @@ def main():
 if __name__ == '__main__':
     setup()
     main()
+    # push_dummy_repo(datetime_string_to_object("2024-08-31"))
